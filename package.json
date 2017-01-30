@@ -1,0 +1,28 @@
+{
+  "name": "github-codeowners-labeller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint *.js lib/*.js test/*.js --fix",
+    "start": "probot run ./index.js",
+    "test": "mocha"
+  },
+  "author": "Manuel de la Peña",
+  "license": "ISC",
+  "dependencies": {
+    "minimatch": "^3.0.4",
+    "probot": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "eslint-config-google": "^0.14.0",
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2",
+    "smee-client": "^1.0.2"
+  },
+  "engines": {
+    "node": ">= 7.7.0",
+    "npm": ">= 4.0.0"
+  }
+}
