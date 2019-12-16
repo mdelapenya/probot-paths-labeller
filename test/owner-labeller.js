@@ -130,7 +130,8 @@ describe('OwnerLabeller', () => {
 
       await labeller.label(app);
 
-      expect(app.log.info).toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
+      expect(app.log.info).
+          toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
       expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
         repo: 'probot-codeowners-labellers',
