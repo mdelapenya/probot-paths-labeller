@@ -42,7 +42,7 @@ describe('OwnerLabeller', () => {
     beforeEach(() => {
       github = {
         repos: {
-          getContent: expect.createSpy().andReturn(Promise.resolve({
+          getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
               content: Buffer.from('@manny\n@moe\n@jack').toString('base64'),
             },
@@ -58,7 +58,7 @@ describe('OwnerLabeller', () => {
 
       expect(ownersFile).toExist();
       expect(ownersFile.for).toExist();
-      expect(github.repos.getContent).toHaveBeenCalledWith({
+      expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
         repo: 'bar',
         path: '.github/CODEOWNERS',
@@ -107,7 +107,7 @@ describe('OwnerLabeller', () => {
               ],
             },
           })),
-          getContent: expect.createSpy().andReturn(Promise.resolve({
+          getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
               content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/apm-ui').toString('base64'),
             },
@@ -121,13 +121,12 @@ describe('OwnerLabeller', () => {
     it('returns successfully', async () => {
       await labeller.label();
 
-      expect(github.issue).toHaveBeenCalledWith({
+      expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
         repo: 'probot-codeowners-labellers',
         issue_number: 17,
         labels: ['Team:apm'],
       });
-      expect(github.issues.addLabels).toHaveBeenCalled();
     });
   });
 });
