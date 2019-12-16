@@ -27,7 +27,7 @@ describe('OwnerLabeller', () => {
     };
   });
 
-  describe('repo property', () => {
+  describe('Repo', () => {
     beforeEach(() => {
       github = expect.createSpy();
       labeller = new OwnerLabeller(github, event);
@@ -54,7 +54,7 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns an ownersFile object', async () => {
+    it('returns an ownersFile object from the CODEOWNERS file', async () => {
       const ownersFile = await labeller.getOwners();
 
       expect(ownersFile).toExist();
@@ -116,7 +116,7 @@ describe('OwnerLabeller', () => {
           })),
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/apm-ui').toString('base64'),
+              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch').toString('base64'),
             },
           })),
         },
@@ -125,9 +125,9 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns successfully', async () => {
-      const expectedLabels = ['Team:apm'];
-      
+    it('adds labels properly, including an INFO log', async () => {
+      const expectedLabels = ['Team:apm', 'Team:AppArch'];
+
       await labeller.label(app);
 
       expect(app.log.info).toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
