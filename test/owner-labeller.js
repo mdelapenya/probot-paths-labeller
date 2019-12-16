@@ -6,6 +6,7 @@ describe('OwnerLabeller', () => {
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
 
+  let app;
   let event;
   let github;
   let labeller;
@@ -89,6 +90,12 @@ describe('OwnerLabeller', () => {
         },
       };
 
+      app = {
+        log: {
+          info: expect.createSpy(),
+        },
+      };
+
       github = {
         issue: expect.createSpy(),
         issues: {
@@ -119,13 +126,16 @@ describe('OwnerLabeller', () => {
     });
 
     it('returns successfully', async () => {
-      await labeller.label();
+      const expectedLabels = ['Team:apm'];
+      
+      await labeller.label(app);
 
+      expect(app.log.info).toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
       expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
         repo: 'probot-codeowners-labellers',
         issue_number: 17,
-        labels: ['Team:apm'],
+        labels: expectedLabels,
       });
     });
   });

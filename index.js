@@ -4,9 +4,13 @@ module.exports = (app) => {
   const label = async function(context) {
     const ownerLabeller = new OwnerLabeller(context.github, context);
 
-    return ownerLabeller.label();
+    return ownerLabeller.label(app);
   };
 
-  app.on('pull_request.opened', label);
-  app.on('pull_request.synchronize', label);
+  const events = [
+    'pull_request.opened',
+    'pull_request.synchronize',
+  ];
+
+  app.on(events, label);
 };
