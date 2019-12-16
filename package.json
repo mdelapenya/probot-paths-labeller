@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "minimatch": "^3.0.4",
-    "probot": "^7.1.0"
+    "probot": "^9.2.15"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
