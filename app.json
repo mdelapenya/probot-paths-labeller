@@ -1,0 +1,20 @@
+{
+  "name": "probot-codeowners-labeller",
+  "description": "Labels Elastic teams in Pull Requests based on contents of the CODEOWNERS file.",
+  "keywords": ["node", "github", "elastic"],
+  "repository": "https://github.com/mdelapenya/probot-codeowners-labeller",
+  "env": {
+    "PRIVATE_KEY": {
+      "description": "the private key you downloaded when creating the GitHub Integration"
+    },
+    "APP_ID": {
+      "description": "the ID of your GitHub Integration"
+    },
+    "WEBHOOK_PROXY_URL": {
+      "description": "the URL of the proxy used by your Github Integration"
+    },
+    "WEBHOOK_SECRET": {
+      "description": "the secret configured for your GitHub Integration"
+    }
+  }
+}
