@@ -77,6 +77,7 @@ describe('OwnerLabeller', () => {
             head: {
               sha: HEAD_SHA,
             },
+            number: 17,
           },
           repository: {
             name: 'probot-codeowners-labellers',
@@ -121,7 +122,10 @@ describe('OwnerLabeller', () => {
       await labeller.label();
 
       expect(github.issue).toHaveBeenCalledWith({
-        labelsToAdd: ['Team:apm'],
+        owner: 'mdelapenya',
+        repo: 'probot-codeowners-labellers',
+        issue_number: 17,
+        labels: ['Team:apm'],
       });
       expect(github.issues.addLabels).toHaveBeenCalled();
     });
