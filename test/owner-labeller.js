@@ -34,7 +34,7 @@ describe('OwnerLabeller', () => {
     });
 
     it('extracts the right information', () => {
-      expect(labeller.repo).toMatch({owner: 'foo', repo: 'bar'});
+      expect(labeller.repo).toMatch({owner: 'foo', name: 'bar'});
       expect(github).toNotHaveBeenCalled();
     });
   });
@@ -61,7 +61,7 @@ describe('OwnerLabeller', () => {
       expect(ownersFile.for).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
-        repo: 'bar',
+        name: 'bar',
         path: '.github/CODEOWNERS',
       });
     });
