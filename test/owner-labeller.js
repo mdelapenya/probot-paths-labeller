@@ -6,6 +6,7 @@ describe('OwnerLabeller', () => {
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
 
+  let app;
   let event;
   let github;
   let labeller;
@@ -26,14 +27,14 @@ describe('OwnerLabeller', () => {
     };
   });
 
-  describe('repo property', () => {
+  describe('Repo', () => {
     beforeEach(() => {
       github = expect.createSpy();
       labeller = new OwnerLabeller(github, event);
     });
 
     it('extracts the right information', () => {
-      expect(labeller.repo).toMatch({owner: 'foo', repo: 'bar'});
+      expect(labeller.repo).toMatch({owner: 'foo', name: 'bar'});
       expect(github).toNotHaveBeenCalled();
     });
   });
@@ -42,7 +43,7 @@ describe('OwnerLabeller', () => {
     beforeEach(() => {
       github = {
         repos: {
-          getContent: expect.createSpy().andReturn(Promise.resolve({
+          getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
               content: Buffer.from('@manny\n@moe\n@jack').toString('base64'),
             },
@@ -53,14 +54,14 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns an ownersFile object', async () => {
+    it('returns an ownersFile object from the CODEOWNERS file', async () => {
       const ownersFile = await labeller.getOwners();
 
       expect(ownersFile).toExist();
       expect(ownersFile.for).toExist();
-      expect(github.repos.getContent).toHaveBeenCalledWith({
+      expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
-        repo: 'bar',
+        name: 'bar',
         path: '.github/CODEOWNERS',
       });
     });
@@ -77,6 +78,7 @@ describe('OwnerLabeller', () => {
             head: {
               sha: HEAD_SHA,
             },
+            number: 17,
           },
           repository: {
             name: 'probot-codeowners-labellers',
@@ -85,6 +87,12 @@ describe('OwnerLabeller', () => {
             },
           },
           number: ISSUE_NUMBER,
+        },
+      };
+
+      app = {
+        log: {
+          info: expect.createSpy(),
         },
       };
 
@@ -106,9 +114,9 @@ describe('OwnerLabeller', () => {
               ],
             },
           })),
-          getContent: expect.createSpy().andReturn(Promise.resolve({
+          getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/apm-ui').toString('base64'),
+              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch').toString('base64'),
             },
           })),
         },
@@ -117,13 +125,19 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns successfully', async () => {
-      await labeller.label();
+    it('adds labels properly, including an INFO log', async () => {
+      const expectedLabels = ['Team:apm', 'Team:AppArch'];
 
-      expect(github.issue).toHaveBeenCalledWith({
-        labelsToAdd: ['Team:apm'],
+      await labeller.label(app);
+
+      expect(app.log.info).
+          toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
+      expect(github.issues.addLabels).toHaveBeenCalledWith({
+        owner: 'mdelapenya',
+        repo: 'probot-codeowners-labellers',
+        issue_number: 17,
+        labels: expectedLabels,
       });
-      expect(github.issues.addLabels).toHaveBeenCalled();
     });
   });
 });
