@@ -11,6 +11,7 @@ module.exports = (app) => {
     'pull_request.opened',
     'pull_request.synchronize',
   ];
+  app.log.info("probot-codeowner-labeller loaded");
 
   app.on(events, label);
 };
