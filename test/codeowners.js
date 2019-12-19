@@ -7,11 +7,11 @@ describe('owners', () => {
   beforeEach(() => {
     owners = codeowners(`
       # Comment
-      * @owner @org/team
+      * @owner @org/team     # @@probot-codeowners-labeller:"label1","label2"
       *.pdf finance@gmail.com
       *.rb *.py @user
-      *.md @focused
-      LICENSE @org/legal
+      *.md @focused          ##### @@probot-codeowners-labeller:"label4","label5"
+      LICENSE @org/legal     # @@probot-other:"label1","label2"
       README.md @overriden
     `);
   });
