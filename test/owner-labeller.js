@@ -62,7 +62,7 @@ describe('OwnerLabeller', () => {
       expect(ownersFile.ownersFor).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
-        name: 'bar',
+        repo: 'bar',
         path: '.github/CODEOWNERS',
       });
     });
