@@ -58,6 +58,7 @@ describe('OwnerLabeller', () => {
       const ownersFile = await labeller.getOwners();
 
       expect(ownersFile).toExist();
+      expect(ownersFile.labelsFor).toExist();
       expect(ownersFile.ownersFor).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
@@ -116,7 +117,7 @@ describe('OwnerLabeller', () => {
           })),
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch').toString('base64'),
+              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch # @@probot-codeowners-labeller:"Team:apm","Team:AppArch"').toString('base64'),
             },
           })),
         },
