@@ -58,7 +58,7 @@ describe('OwnerLabeller', () => {
       const ownersFile = await labeller.getOwners();
 
       expect(ownersFile).toExist();
-      expect(ownersFile.for).toExist();
+      expect(ownersFile.ownersFor).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
         name: 'bar',
