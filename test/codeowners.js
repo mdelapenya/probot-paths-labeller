@@ -17,31 +17,31 @@ describe('owners', () => {
   });
 
   it('default owners for everything in the repo', () => {
-    expect(ownersFile.for('*')).toEqual(['@owner', '@org/team']);
+    expect(ownersFile.ownersFor('*')).toEqual(['@owner', '@org/team']);
   });
 
   it('returns all users without a path specified', () => {
-    expect(ownersFile.for('README')).toEqual(['@owner', '@org/team']);
+    expect(ownersFile.ownersFor('README')).toEqual(['@owner', '@org/team']);
   });
 
   it('returns teams with matching path', () => {
-    expect(ownersFile.for('LICENSE')).toEqual('@org/legal');
+    expect(ownersFile.ownersFor('LICENSE')).toEqual('@org/legal');
   });
 
   it('returns email with matching path', () => {
-    expect(ownersFile.for('*.pdf')).toEqual('finance@gmail.com');
+    expect(ownersFile.ownersFor('*.pdf')).toEqual('finance@gmail.com');
   });
 
   it('returns users matching any path', () => {
-    expect(ownersFile.for('foo.rb').includes('@user')).toBe(true);
-    expect(ownersFile.for('foo.py').includes('@user')).toBe(true);
+    expect(ownersFile.ownersFor('foo.rb').includes('@user')).toBe(true);
+    expect(ownersFile.ownersFor('foo.py').includes('@user')).toBe(true);
   });
 
   it('returns user without precedence', () => {
-    expect(ownersFile.for('LICENSE.md')).toEqual(['@focused']);
+    expect(ownersFile.ownersFor('LICENSE.md')).toEqual(['@focused']);
   });
 
   it('returns user with precedence', () => {
-    expect(ownersFile.for('README.md')).toEqual(['@overriden']);
+    expect(ownersFile.ownersFor('README.md')).toEqual(['@overriden']);
   });
 });
