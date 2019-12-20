@@ -9,7 +9,7 @@ describe('codeowners', () => {
       # Comment
       * @owner @org/team     # @@probot-codeowners-labeller:"label1","label2"
       *.pdf finance@gmail.com
-      *.rb *.py @user        ##### @@probot-codeowners-labeller:"label4","label5"
+      *.rb *.py @user        #### @@probot-codeowners-labeller:"label4","label5"
       *.txt @writer          # @@probot-codeowners-labeller:"label-only" @@probot-other:"labelOther"
       *.doc @officer          # @@probot-codeowners-labeller:"label-non-repeated" @@probot-codeowners-labeller:"label"
       *.md @focused          
@@ -78,7 +78,7 @@ describe('codeowners', () => {
       const rubyLabels = ownersFile.labelsFor('foo.rb');
       expect(rubyLabels.includes('label4')).toBe(true);
       expect(rubyLabels.includes('label5')).toBe(true);
-      
+
       const pythonLabels = ownersFile.labelsFor('foo.py');
       expect(pythonLabels.includes('label4')).toBe(true);
       expect(pythonLabels.includes('label5')).toBe(true);
