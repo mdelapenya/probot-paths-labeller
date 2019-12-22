@@ -6,7 +6,28 @@ describe('OwnerLabeller', () => {
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
 
-  let app;
+  let config = `---
+- "*":
+  - "label1"
+  - "label2"
+- "*.pdf": []
+- "*.rb":
+  - "label4"
+  - "label5"
+- "*.py":
+  - "label4"
+  - "label5"
+- "*.txt":
+  - "label-only"
+- "*.doc":
+  - "label-6"
+  - "label-7"
+- "*.md": []
+- "LICENSE": []
+- "README.md":
+  - "label-precedence"`;
+
+let app;
   let event;
   let github;
   let labeller;
@@ -39,13 +60,13 @@ describe('OwnerLabeller', () => {
     });
   });
 
-  describe('getOwners', () => {
+  describe('getLabels', () => {
     beforeEach(() => {
       github = {
         repos: {
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('@manny\n@moe\n@jack').toString('base64'),
+              content: Buffer.from(config).toString('base64'),
             },
           })),
         },
@@ -54,16 +75,15 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns an ownersFile object from the CODEOWNERS file', async () => {
-      const ownersFile = await labeller.getOwners();
+    it('returns an labelsFile object from the codeowners-labeller.yml file', async () => {
+      const labelsFile = await labeller.getLabels();
 
-      expect(ownersFile).toExist();
-      expect(ownersFile.labelsFor).toExist();
-      expect(ownersFile.ownersFor).toExist();
+      expect(labelsFile).toExist();
+      expect(labelsFile.for).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
         repo: 'bar',
-        path: '.github/CODEOWNERS',
+        path: '.github/codeowners-labeller.yml',
       });
     });
   });
@@ -117,7 +137,7 @@ describe('OwnerLabeller', () => {
           })),
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch # @@probot-codeowners-labeller:"Team:apm","Team:AppArch"').toString('base64'),
+              content: Buffer.from(config).toString('base64'),
             },
           })),
         },
@@ -127,7 +147,7 @@ describe('OwnerLabeller', () => {
     });
 
     it('adds labels properly, including an INFO log', async () => {
-      const expectedLabels = ['Team:apm', 'Team:AppArch'];
+      const expectedLabels = ['label1', 'label2'];
 
       await labeller.label(app);
 
