@@ -16,8 +16,6 @@ describe('codeowners', () => {
 - "*.py":
   - "label4"
   - "label5"
-- "*.txt":
-  - "label-only"
 - "*.doc":
   - "label6"
   - "label7"
@@ -36,16 +34,8 @@ describe('codeowners', () => {
       expect(labels.for('README')).toEqual(['label1', 'label2']);
     });
 
-    it('returns labels only for codeowners-labeller probot', () => {
-      expect(labels.for('note.txt')).toEqual(['label-only']);
-    });
-
     it('returns no labels for a path without labels', () => {
       expect(labels.for('report.pdf')).toEqual([]);
-    });
-
-    it('returns no labels with a different probot marker', () => {
-      expect(labels.for('LICENSE')).toEqual([]);
     });
 
     it('returns labels matching any of multiple paths', () => {
