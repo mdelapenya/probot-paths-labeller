@@ -1,0 +1,9 @@
+---
+- "*":
+  - "Good First Issue"
+- "index.js":
+  - "Probot"
+- "lib/codeowners.js":
+  - "Codeowners"
+- "lib/owner-labeller.js":
+  - "Labeller"
