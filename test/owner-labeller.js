@@ -6,7 +6,7 @@ describe('OwnerLabeller', () => {
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
 
-  let config = `---
+  const config = `---
 - "*":
   - "label1"
   - "label2"
@@ -27,7 +27,7 @@ describe('OwnerLabeller', () => {
 - "README.md":
   - "label-precedence"`;
 
-let app;
+  let app;
   let event;
   let github;
   let labeller;
