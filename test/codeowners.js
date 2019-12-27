@@ -6,23 +6,26 @@ describe('codeowners', () => {
 
   beforeEach(() => {
     labels = codeowners(`---
-- "*":
-  - "label1"
-  - "label2"
-- "*.pdf": []
-- "*.rb":
-  - "label4"
-  - "label5"
-- "*.py":
-  - "label4"
-  - "label5"
-- "*.doc":
-  - "label6"
-  - "label7"
-- "*.md": []
-- "LICENSE": []
-- "README.md":
-  - "label-precedence"`);
+- "label1":
+  - "*"
+- "label2":
+  - "*"
+- "":
+  - "*.pdf"
+  - "*.md"
+  - "LICENSE"
+- "label4":
+  - "*.py"
+  - "*.rb"
+- "label5":
+  - "*.py"
+  - "*.rb"
+- "label6":
+  - "*.doc"
+- "label7":
+  - "*.doc"
+- "label-precedence":
+  - "README.md"`);
   });
 
   describe('labels', () => {
