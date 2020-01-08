@@ -11,6 +11,7 @@
   "author": "Manuel de la Peña",
   "license": "ISC",
   "dependencies": {
+    "js-yaml": "^3.13.1",
     "minimatch": "^3.0.4",
     "probot": "^9.4.0"
   },

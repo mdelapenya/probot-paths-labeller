@@ -6,6 +6,28 @@ describe('OwnerLabeller', () => {
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
 
+  const config = `---
+- "label1":
+  - "*"
+- "label2":
+  - "*"
+- "":
+  - "*.pdf"
+  - "*.md"
+  - "LICENSE"
+- "label4":
+  - "*.py"
+  - "*.rb"
+- "label5":
+  - "*.py"
+  - "*.rb"
+- "label6":
+  - "*.doc"
+- "label7":
+  - "*.doc"
+- "label-precedence":
+  - "README.md"`;
+
   let app;
   let event;
   let github;
@@ -39,13 +61,13 @@ describe('OwnerLabeller', () => {
     });
   });
 
-  describe('getOwners', () => {
+  describe('getLabels', () => {
     beforeEach(() => {
       github = {
         repos: {
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('@manny\n@moe\n@jack').toString('base64'),
+              content: Buffer.from(config).toString('base64'),
             },
           })),
         },
@@ -54,15 +76,15 @@ describe('OwnerLabeller', () => {
       labeller = new OwnerLabeller(github, event);
     });
 
-    it('returns an ownersFile object from the CODEOWNERS file', async () => {
-      const ownersFile = await labeller.getOwners();
+    it('returns an labelsFile object from the codeowners-labeller.yml file', async () => {
+      const labelsFile = await labeller.getLabels();
 
-      expect(ownersFile).toExist();
-      expect(ownersFile.for).toExist();
+      expect(labelsFile).toExist();
+      expect(labelsFile.for).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
-        name: 'bar',
-        path: '.github/CODEOWNERS',
+        repo: 'bar',
+        path: '.github/codeowners-labeller.yml',
       });
     });
   });
@@ -116,7 +138,7 @@ describe('OwnerLabeller', () => {
           })),
           getContents: expect.createSpy().andReturn(Promise.resolve({
             data: {
-              content: Buffer.from('* @manny\nwibble @elastic/apm-ui\n wobble @elastic/kibana-app-arch').toString('base64'),
+              content: Buffer.from(config).toString('base64'),
             },
           })),
         },
@@ -126,7 +148,7 @@ describe('OwnerLabeller', () => {
     });
 
     it('adds labels properly, including an INFO log', async () => {
-      const expectedLabels = ['Team:apm', 'Team:AppArch'];
+      const expectedLabels = ['label1', 'label2'];
 
       await labeller.label(app);
 

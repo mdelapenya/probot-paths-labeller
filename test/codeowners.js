@@ -1,47 +1,62 @@
 const expect = require('expect');
 const codeowners = require('../lib/codeowners');
 
-describe('owners', () => {
-  let owners;
+describe('codeowners', () => {
+  let labels;
 
   beforeEach(() => {
-    owners = codeowners(`
-      # Comment
-      * @owner @org/team
-      *.pdf finance@gmail.com
-      *.rb *.py @user
-      *.md @focused
-      LICENSE @org/legal
-      README.md @overriden
-    `);
+    labels = codeowners(`---
+- "label1":
+  - "*"
+- "label2":
+  - "*"
+- "":
+  - "*.pdf"
+  - "*.md"
+  - "LICENSE"
+- "label4":
+  - "*.py"
+  - "*.rb"
+- "label5":
+  - "*.py"
+  - "*.rb"
+- "label6":
+  - "*.doc"
+- "label7":
+  - "*.doc"
+- "label-precedence":
+  - "README.md"`);
   });
 
-  it('default owners for everything in the repo', () => {
-    expect(owners.for('*')).toEqual(['@owner', '@org/team']);
-  });
+  describe('labels', () => {
+    it('returns default labels for everything in the repo', () => {
+      expect(labels.for('*')).toEqual(['label1', 'label2']);
+    });
 
-  it('returns all users without a path specified', () => {
-    expect(owners.for('README')).toEqual(['@owner', '@org/team']);
-  });
+    it('returns default labels without a path specified', () => {
+      expect(labels.for('README')).toEqual(['label1', 'label2']);
+    });
 
-  it('returns teams with matching path', () => {
-    expect(owners.for('LICENSE')).toEqual('@org/legal');
-  });
+    it('returns no labels for a path without labels', () => {
+      expect(labels.for('report.pdf')).toEqual([]);
+    });
 
-  it('returns email with matching path', () => {
-    expect(owners.for('*.pdf')).toEqual('finance@gmail.com');
-  });
+    it('returns labels matching any of multiple paths', () => {
+      const rubyLabels = labels.for('foo.rb');
+      expect(rubyLabels.includes('label4')).toBe(true);
+      expect(rubyLabels.includes('label5')).toBe(true);
 
-  it('returns users matching any path', () => {
-    expect(owners.for('foo.rb').includes('@user')).toBe(true);
-    expect(owners.for('foo.py').includes('@user')).toBe(true);
-  });
+      const pythonLabels = labels.for('foo.py');
+      expect(pythonLabels.includes('label4')).toBe(true);
+      expect(pythonLabels.includes('label5')).toBe(true);
+    });
 
-  it('returns user without precedence', () => {
-    expect(owners.for('LICENSE.md')).toEqual(['@focused']);
-  });
+    it('returns labels without precedence', () => {
+      expect(labels.for('LICENSE.md')).toEqual([]);
+    });
 
-  it('returns user with precedence', () => {
-    expect(owners.for('README.md')).toEqual(['@overriden']);
+    it('returns labels with precedence', () => {
+      expect(labels.for('README.md')).toEqual(['label-precedence']);
+    });
   });
 });
