@@ -21,6 +21,7 @@ describe('codeowners', () => {
   - "*.py"
   - "*.rb"
 - "label6":
+  - "folder/**/*.txt"
   - "*.doc"
 - "label7":
   - "*.doc"
@@ -49,6 +50,17 @@ describe('codeowners', () => {
       const pythonLabels = labels.for('foo.py');
       expect(pythonLabels.includes('label4')).toBe(true);
       expect(pythonLabels.includes('label5')).toBe(true);
+    });
+
+    it('returns labels from glob patterns', () => {
+      expect(labels.for('folder/file1.txt').includes('label6')).toBe(true);
+      expect(labels.for('folder/file2.txt').includes('label6')).toBe(true);
+
+      expect(labels.for('folder/subdir/file1.txt').includes('label6')).toBe(true);
+      expect(labels.for('folder/subdir/file2.txt').includes('label6')).toBe(true);
+
+      expect(labels.for('folder/a/b/c/d/e/f/g/h/i/j/file1.txt').includes('label6')).toBe(true);
+      expect(labels.for('folder/a/b/c/d/e/f/g/h/i/j/file2.txt').includes('label6')).toBe(true);
     });
 
     it('returns labels without precedence', () => {

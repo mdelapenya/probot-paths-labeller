@@ -30,6 +30,7 @@ An example `codeowners-labeller.yml` file is shown here:
   - "*.py"
   - "*.rb"
 - "label6":
+  - "folder/**/*.md"
   - "*.doc"
 - "label7":
   - "*.doc"
