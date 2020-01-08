@@ -7,7 +7,7 @@
 1. **[Install the app](https://github.com/apps/elastic-codeowners-labeller)**.
 1. Create a `codeowners-labeller.yml` file in your repository, under the `.github` directory.
 1. Use your own labels as the keys in the YAML file.
-1. Use an array for paths to be added to a label.
+1. Use an array for paths to be added to a label. Pathname Format: glob
 1. Use the empty label (`- "":`) for exclusions. Paths here won't receive a label unless precedent labels apply.
 1. Wait for new Pull Requests to be opened or synchronised.
 
