@@ -1,11 +1,11 @@
 const expect = require('expect');
-const codeowners = require('../lib/codeowners');
+const pathsForLabels = require('../lib/paths-for-labels');
 
-describe('codeowners', () => {
+describe('pathsForLabels', () => {
   let labels;
 
   beforeEach(() => {
-    labels = codeowners(`---
+    labels = pathsForLabels(`---
 - "label1":
   - "*"
 - "label2":

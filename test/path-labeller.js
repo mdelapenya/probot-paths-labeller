@@ -1,7 +1,7 @@
 const expect = require('expect');
-const OwnerLabeller = require('../lib/owner-labeller');
+const PathLabeller = require('../lib/path-labeller');
 
-describe('OwnerLabeller', () => {
+describe('PathLabeller', () => {
   const BASE_SHA = '1234567890abcdef1234567890abcdef12345678';
   const HEAD_SHA = '234567890abcdef1234567890abcdef123456789';
   const ISSUE_NUMBER = 42;
@@ -52,7 +52,7 @@ describe('OwnerLabeller', () => {
   describe('Repo', () => {
     beforeEach(() => {
       github = expect.createSpy();
-      labeller = new OwnerLabeller(github, event);
+      labeller = new PathLabeller(github, event);
     });
 
     it('extracts the right information', () => {
@@ -73,10 +73,10 @@ describe('OwnerLabeller', () => {
         },
       };
 
-      labeller = new OwnerLabeller(github, event);
+      labeller = new PathLabeller(github, event);
     });
 
-    it('returns an labelsFile object from the codeowners-labeller.yml file', async () => {
+    it('returns an labelsFile object from the paths-labeller.yml file', async () => {
       const labelsFile = await labeller.getLabels();
 
       expect(labelsFile).toExist();
@@ -84,7 +84,7 @@ describe('OwnerLabeller', () => {
       expect(github.repos.getContents).toHaveBeenCalledWith({
         owner: 'foo',
         repo: 'bar',
-        path: '.github/codeowners-labeller.yml',
+        path: '.github/paths-labeller.yml',
       });
     });
   });
@@ -103,7 +103,7 @@ describe('OwnerLabeller', () => {
             number: 17,
           },
           repository: {
-            name: 'probot-codeowners-labellers',
+            name: 'probot-paths-labellers',
             owner: {
               login: 'mdelapenya',
             },
@@ -144,7 +144,7 @@ describe('OwnerLabeller', () => {
         },
       };
 
-      labeller = new OwnerLabeller(github, event);
+      labeller = new PathLabeller(github, event);
     });
 
     it('adds labels properly, including an INFO log', async () => {
@@ -156,7 +156,7 @@ describe('OwnerLabeller', () => {
           toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
       expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
-        repo: 'probot-codeowners-labellers',
+        repo: 'probot-paths-labellers',
         issue_number: 17,
         labels: expectedLabels,
       });

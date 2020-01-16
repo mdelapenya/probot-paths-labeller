@@ -1,7 +1,7 @@
 {
-  "name": "@mdelapenya/github-codeowners-labeller",
+  "name": "probot-paths-labeller",
   "version": "1.0.0",
-  "description": "> a GitHub App built with [Probot](https://github.com/probot/probot) that adds labels in Pull Requests based on contents of the `codeowners-labeller.yml` file.",
+  "description": "> a GitHub App built with [Probot](https://github.com/probot/probot) that adds labels in Pull Requests based on contents of the `paths-labeller.yml` file.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint *.js lib/*.js test/*.js --fix",
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mdelapenya/probot-codeowners-labeller.git"
+    "url": "git+https://github.com/mdelapenya/probot-paths-labeller.git"
   },
   "keywords": [
     "probot",
@@ -47,7 +47,7 @@
     "labels"
   ],
   "bugs": {
-    "url": "https://github.com/mdelapenya/probot-codeowners-labeller/issues"
+    "url": "https://github.com/mdelapenya/probot-paths-labeller/issues"
   },
-  "homepage": "https://github.com/mdelapenya/probot-codeowners-labeller#readme"
+  "homepage": "https://github.com/mdelapenya/probot-paths-labeller#readme"
 }

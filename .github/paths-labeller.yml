@@ -3,7 +3,7 @@
   - "*"
 - "Probot":
   - "index.js"
-- "Codeowners":
-  - "lib/codeowners.js"
+- "Paths":
+  - "lib/paths-for-labels.js"
 - "Labeller":
-  - "lib/owner-labeller.js"
+  - "lib/path-labeller.js"
