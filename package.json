@@ -1,7 +1,7 @@
 {
-  "name": "github-codeowners-labeller",
+  "name": "@mdelapenya/github-codeowners-labeller",
   "version": "1.0.0",
-  "description": "",
+  "description": "> a GitHub App built with [Probot](https://github.com/probot/probot) that adds labels in Pull Requests based on contents of the `codeowners-labeller.yml` file.",
   "main": "index.js",
   "scripts": {
     "lint": "eslint *.js lib/*.js test/*.js --fix",
@@ -25,5 +25,23 @@
   "engines": {
     "node": ">= 7.7.0",
     "npm": ">= 4.0.0"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdelapenya/probot-codeowners-labeller.git"
+  },
+  "keywords": [
+    "probot",
+    "github",
+    "labels"
+  ],
+  "bugs": {
+    "url": "https://github.com/mdelapenya/probot-codeowners-labeller/issues"
+  },
+  "homepage": "https://github.com/mdelapenya/probot-codeowners-labeller#readme"
 }
