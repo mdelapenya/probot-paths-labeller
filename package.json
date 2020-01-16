@@ -9,7 +9,13 @@
     "test": "mocha"
   },
   "author": "Manuel de la Peña",
-  "license": "ISC",
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
   "dependencies": {
     "js-yaml": "^3.13.1",
     "minimatch": "^3.0.4",
