@@ -1,8 +1,8 @@
 {
-  "name": "probot-codeowners-labeller",
-  "description": "Labels Elastic teams in Pull Requests based on contents of the CODEOWNERS file.",
+  "name": "probot-paths-labeller",
+  "description": "Labels Pull Requests based on contents of the paths-labeller.yml file.",
   "keywords": ["node", "github", "elastic"],
-  "repository": "https://github.com/mdelapenya/probot-codeowners-labeller",
+  "repository": "https://github.com/mdelapenya/probot-paths-labeller",
   "env": {
     "PRIVATE_KEY": {
       "description": "the private key you downloaded when creating the GitHub Integration"
