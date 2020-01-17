@@ -25,8 +25,8 @@ describe('pathsForLabels', () => {
   - "*.doc"
 - "label7":
   - "*.doc"
-- "label-precedence":
-  - "README.md"`);
+- "label8":
+  - "README.doc"`);
   });
 
   describe('labels', () => {
@@ -44,10 +44,14 @@ describe('pathsForLabels', () => {
 
     it('returns labels matching any of multiple paths', () => {
       const rubyLabels = labels.for('foo.rb');
+      expect(rubyLabels.includes('label1')).toBe(true);
+      expect(rubyLabels.includes('label2')).toBe(true);
       expect(rubyLabels.includes('label4')).toBe(true);
       expect(rubyLabels.includes('label5')).toBe(true);
-
+      
       const pythonLabels = labels.for('foo.py');
+      expect(pythonLabels.includes('label1')).toBe(true);
+      expect(pythonLabels.includes('label2')).toBe(true);
       expect(pythonLabels.includes('label4')).toBe(true);
       expect(pythonLabels.includes('label5')).toBe(true);
     });
@@ -64,11 +68,7 @@ describe('pathsForLabels', () => {
     });
 
     it('returns labels without precedence', () => {
-      expect(labels.for('LICENSE.md')).toEqual([]);
-    });
-
-    it('returns labels with precedence', () => {
-      expect(labels.for('README.md')).toEqual(['label-precedence']);
+      expect(labels.for('README.doc')).toEqual(['label1','label2','label6','label7','label8']);
     });
   });
 });
