@@ -14,6 +14,7 @@ describe('pathsForLabels', () => {
   - "*.pdf"
   - "*.md"
   - "LICENSE"
+  - "PRIVATE.doc"
 - "label4":
   - "*.py"
   - "*.rb"
@@ -23,10 +24,8 @@ describe('pathsForLabels', () => {
 - "label6":
   - "folder/**/*.txt"
   - "*.doc"
-- "label7":
-  - "*.doc"
 - "label8":
-  - "README.doc"`);
+  - "script.py"`);
   });
 
   describe('labels', () => {
@@ -39,21 +38,28 @@ describe('pathsForLabels', () => {
     });
 
     it('returns no labels for a path without labels', () => {
+      expect(labels.for('class.java')).toEqual(['label1', 'label2']);
+    });
+
+    it('returns no labels for a excluded path', () => {
       expect(labels.for('report.pdf')).toEqual([]);
+      expect(labels.for('CONTRIBUTING.md')).toEqual([]);
+      expect(labels.for('LICENSE')).toEqual([]);
+    });
+
+    it('returns no labels for a excluded path even with existing labels', () => {
+      expect(labels.for('PRIVATE.doc')).toEqual([]);
     });
 
     it('returns labels matching any of multiple paths', () => {
       const rubyLabels = labels.for('foo.rb');
-      expect(rubyLabels.includes('label1')).toBe(true);
-      expect(rubyLabels.includes('label2')).toBe(true);
-      expect(rubyLabels.includes('label4')).toBe(true);
-      expect(rubyLabels.includes('label5')).toBe(true);
-      
+      expect(rubyLabels).toEqual(['label1', 'label2', 'label4', 'label5']);
+
       const pythonLabels = labels.for('foo.py');
-      expect(pythonLabels.includes('label1')).toBe(true);
-      expect(pythonLabels.includes('label2')).toBe(true);
-      expect(pythonLabels.includes('label4')).toBe(true);
-      expect(pythonLabels.includes('label5')).toBe(true);
+      expect(pythonLabels).toEqual(['label1', 'label2', 'label4', 'label5']);
+
+      const docLabels = labels.for('SUMMARY.doc');
+      expect(docLabels).toEqual(['label1', 'label2', 'label6']);
     });
 
     it('returns labels from glob patterns', () => {
@@ -68,7 +74,7 @@ describe('pathsForLabels', () => {
     });
 
     it('returns labels without precedence', () => {
-      expect(labels.for('README.doc')).toEqual(['label1','label2','label6','label7','label8']);
+      expect(labels.for('script.py')).toEqual(['label1', 'label2', 'label4', 'label5', 'label8']);
     });
   });
 });
