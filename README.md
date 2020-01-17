@@ -22,6 +22,7 @@ An example `paths-labeller.yml` file is shown here:
   - "*.pdf"
   - "*.md"
   - "LICENSE"
+  - "PRIVATE.doc"
 - "label4":
   - "*.py"
   - "*.rb"
@@ -29,10 +30,8 @@ An example `paths-labeller.yml` file is shown here:
   - "*.py"
   - "*.rb"
 - "label6":
-  - "folder/**/*.md"
+  - "folder/**/*.txt"
   - "*.doc"
-- "label7":
-  - "*.doc"
-- "label-precedence":
-  - "README.md"
+- "label8":
+  - "script.py"
 ```
