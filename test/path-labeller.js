@@ -34,6 +34,13 @@ describe('PathLabeller', () => {
   let labeller;
 
   beforeEach(() => {
+    app = {
+      log: {
+        info: expect.createSpy(),
+        warn: expect.createSpy(),
+      },
+    };
+
     event = {
       payload: {
         pull_request: {
@@ -62,7 +69,29 @@ describe('PathLabeller', () => {
   });
 
   describe('getLabels', () => {
-    beforeEach(() => {
+    it('returns a fallback object when paths-labeller.yml is not present', async () => {
+      github = {
+        repos: {
+          getContents: expect.createSpy().andThrow(new Error('HttpError: Not Found')),
+        },
+      };
+
+      labeller = new PathLabeller(github, event);
+
+      const labelsFile = await labeller.getLabels(app);
+
+      expect(app.log.warn).
+        toHaveBeenCalledWith('(Error: HttpError: Not Found) while reading the path-labeller.yml file in the repository. Using an empty one as fallback');
+      expect(labelsFile).toExist();
+      expect(labelsFile.for).toExist();
+      expect(github.repos.getContents).toHaveBeenCalledWith({
+        owner: 'foo',
+        repo: 'bar',
+        path: '.github/paths-labeller.yml',
+      });
+    });
+
+    it('returns an labelsFile object from the paths-labeller.yml file', async () => {
       github = {
         repos: {
           getContents: expect.createSpy().andReturn(Promise.resolve({
@@ -74,10 +103,8 @@ describe('PathLabeller', () => {
       };
 
       labeller = new PathLabeller(github, event);
-    });
 
-    it('returns an labelsFile object from the paths-labeller.yml file', async () => {
-      const labelsFile = await labeller.getLabels();
+      const labelsFile = await labeller.getLabels(app);
 
       expect(labelsFile).toExist();
       expect(labelsFile.for).toExist();
@@ -109,12 +136,6 @@ describe('PathLabeller', () => {
             },
           },
           number: ISSUE_NUMBER,
-        },
-      };
-
-      app = {
-        log: {
-          info: expect.createSpy(),
         },
       };
 
@@ -154,6 +175,33 @@ describe('PathLabeller', () => {
 
       expect(app.log.info).
           toHaveBeenCalledWith(`Labels added to the issue: ${expectedLabels}`);
+      expect(github.issues.addLabels).toHaveBeenCalledWith({
+        owner: 'mdelapenya',
+        repo: 'probot-paths-labellers',
+        issue_number: 17,
+        labels: expectedLabels,
+      });
+    });
+
+    it('adds zero labels, including an INFO log', async () => {
+      const expectedLabels = [];
+
+      github.repos = {
+        compareCommits: expect.createSpy().andReturn(Promise.resolve({
+          data: {
+            files: [
+              {
+                filename: 'LICENSE',
+              },
+            ],
+          },
+        })),
+      };
+
+      await labeller.label(app);
+
+      expect(app.log.info).
+          toHaveBeenCalledWith('No labels will be added to the issue');
       expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
         repo: 'probot-paths-labellers',
