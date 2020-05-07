@@ -45,6 +45,9 @@ describe('PathLabeller', () => {
       payload: {
         pull_request: {
           user: {login: 'test'},
+          base: {
+            ref: 'master',
+          }
         },
         repository: {
           name: 'bar',
@@ -69,6 +72,10 @@ describe('PathLabeller', () => {
   });
 
   describe('getLabels', () => {
+    beforeEach(() => {
+      event.payload.pull_request.base.ref = 'master';
+    });
+
     it('returns a fallback object when paths-labeller.yml is not present', async () => {
       github = {
         repos: {
@@ -76,6 +83,7 @@ describe('PathLabeller', () => {
         },
       };
 
+      event.payload.pull_request.base.ref = '7.x';
       labeller = new PathLabeller(github, event);
 
       const labelsFile = await labeller.getLabels(app);
@@ -88,6 +96,7 @@ describe('PathLabeller', () => {
         owner: 'foo',
         repo: 'bar',
         path: '.github/paths-labeller.yml',
+        ref: '7.x',
       });
     });
 
@@ -112,6 +121,7 @@ describe('PathLabeller', () => {
         owner: 'foo',
         repo: 'bar',
         path: '.github/paths-labeller.yml',
+        ref: 'master',
       });
     });
   });
