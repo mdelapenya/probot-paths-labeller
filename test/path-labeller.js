@@ -47,7 +47,7 @@ describe('PathLabeller', () => {
           user: {login: 'test'},
           base: {
             ref: 'master',
-          }
+          },
         },
         repository: {
           name: 'bar',
@@ -89,7 +89,7 @@ describe('PathLabeller', () => {
       const labelsFile = await labeller.getLabels(app);
 
       expect(app.log.warn).
-        toHaveBeenCalledWith('(Error: HttpError: Not Found) while reading the path-labeller.yml file in the repository. Using an empty one as fallback');
+          toHaveBeenCalledWith('(Error: HttpError: Not Found) while reading the path-labeller.yml file in the repository. Using an empty one as fallback');
       expect(labelsFile).toExist();
       expect(labelsFile.for).toExist();
       expect(github.repos.getContents).toHaveBeenCalledWith({
