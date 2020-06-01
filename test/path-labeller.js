@@ -231,7 +231,7 @@ describe('PathLabeller', () => {
           data: {
             files: [
               {
-                filename: 'LICENSE',
+                filename: 'README.md',
               },
             ],
           },
