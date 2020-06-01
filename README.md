@@ -1,6 +1,8 @@
 # Probot: Paths labeller
 
 > a GitHub App built with [Probot](https://github.com/probot/probot) that adds labels in Pull Requests based on contents of the `paths-labeller.yml` file. It will use base-ref's configuration when calculating the labels to add.
+>
+> This probot will add the labels declared in the descriptor if the pull request is not a draft pull request.
 
 ## Usage
 

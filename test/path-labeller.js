@@ -134,6 +134,7 @@ describe('PathLabeller', () => {
             base: {
               sha: BASE_SHA,
             },
+            draft: false,
             head: {
               sha: HEAD_SHA,
             },
@@ -212,6 +213,35 @@ describe('PathLabeller', () => {
 
       expect(app.log.info).
           toHaveBeenCalledWith('No labels will be added to the issue');
+      expect(github.issues.addLabels).toHaveBeenCalledWith({
+        owner: 'mdelapenya',
+        repo: 'probot-paths-labellers',
+        issue_number: 17,
+        labels: expectedLabels,
+      });
+    });
+
+    it('adds zero labels on draft pull requests', async () => {
+      const expectedLabels = [];
+
+      event.payload.pull_request.draft = true;
+
+      github.repos = {
+        compareCommits: expect.createSpy().andReturn(Promise.resolve({
+          data: {
+            files: [
+              {
+                filename: 'LICENSE',
+              },
+            ],
+          },
+        })),
+      };
+
+      await labeller.label(app);
+
+      expect(app.log.info).
+          toHaveBeenCalledWith('The pull request is in draft state: no labels will be added');
       expect(github.issues.addLabels).toHaveBeenCalledWith({
         owner: 'mdelapenya',
         repo: 'probot-paths-labellers',
