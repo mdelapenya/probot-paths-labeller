@@ -9,8 +9,8 @@ module.exports = (app) => {
 
   const events = [
     'pull_request.opened',
-    'pull_request.ready_for_review',
     'pull_request.synchronize',
+    'pull_request_review.submitted',
   ];
   app.log.info('probot-paths-labeller loaded');
 
