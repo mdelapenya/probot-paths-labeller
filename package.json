@@ -19,7 +19,7 @@
   "dependencies": {
     "js-yaml": "^3.13.1",
     "minimatch": "^3.0.4",
-    "probot": "^9.4.0"
+    "probot": "^12.2.9"
   },
   "devDependencies": {
     "eslint": "^6.7.2",
