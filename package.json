@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "js-yaml": "^3.13.1",
-    "minimatch": "^7.3.0",
+    "minimatch": "^9.0.0",
     "probot": "^12.2.9"
   },
   "devDependencies": {
